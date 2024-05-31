@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Commission;
 use App\Models\Order;
 use App\Models\Product;
@@ -39,9 +41,12 @@ class DatabaseSeeder extends Seeder
         ]);
         // User::factory(12)->create();
         Vendor::factory(10)->create();
-        Product::factory(10)->create();
+        Product::factory(50)->create();
         Order::factory(10)->create();
         Review::factory(10)->create();
         Commission::factory(10)->create();
+        Category::factory(10)->create();
+
+        // Cart::factory(50)->create();
     }
 }
