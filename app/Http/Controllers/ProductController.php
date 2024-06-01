@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::latest()->get();
         return view(
             'product.create',
             [
@@ -85,7 +85,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categories = Category::all();
+        $categories = Category::latest()->get();
 
         return view(
             'product.edit',
@@ -109,7 +109,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'featured' => 'nullable|boolean',
             'on_sale' => 'nullable|boolean',
-            'sale_percent' => 'nullable',
+            'sale_percent' => 'nullable|numeric|min:0|max:100',
             'stock' => 'required|integer|min:0',
         ]);
 

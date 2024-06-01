@@ -15,7 +15,7 @@
                 <div class="col-span-10 p-10 bg-gray-800 rounded-md">
 
                     <h3 class="text-3xl font-bold">
-                        Products
+                        Categories
                     </h3>
 
                     <!-- Start block -->
@@ -26,8 +26,8 @@
                                     class="flex flex-col p-4 space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0 md:space-x-4">
                                     <div class="flex items-center flex-1 space-x-2">
                                         <h5>
-                                            <span class="text-gray-500">All Products:</span>
-                                            <span class="dark:text-white">{{ $products->total() }}</span>
+                                            <span class="text-gray-500">All Categories:</span>
+                                            <span class="dark:text-white">{{ $categories->total() }}</span>
                                         </h5>
 
                                     </div>
@@ -49,14 +49,14 @@
                                                     </svg>
                                                 </div>
                                                 <input type="text" id="simple-search"
-                                                    placeholder="Search for products" required=""
+                                                    placeholder="Search for categories" required=""
                                                     class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             </div>
                                         </form>
                                     </div>
                                     <div
                                         class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                                        <a href="{{ route('product.create') }}" id="createProductButton"
+                                        <a href="{{ route('category.create') }}" id="createCategoryButton"
                                             class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                             <svg class="h-3.5 w-3.5 mr-1.5 -ml-1" fill="currentColor"
                                                 viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@
                                                 <path clip-rule="evenodd" fill-rule="evenodd"
                                                     d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
-                                            Add product
+                                            Add category
                                         </a>
 
                                     </div>
@@ -75,106 +75,38 @@
                                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
 
-                                                <th scope="col" class="p-4">Product</th>
                                                 <th scope="col" class="p-4">Category</th>
-                                                <th scope="col" class="p-4">Stock</th>
-                                                <th scope="col" class="p-4">Sales/Day</th>
-                                                <th scope="col" class="p-4">Sales/Month</th>
-                                                <th scope="col" class="p-4">Rating</th>
-                                                <th scope="col" class="p-4">Sales</th>
-                                                <th scope="col" class="p-4">Revenue</th>
+                                                <th scope="col" class="p-4">Number of products</th>
                                                 <th scope="col" class="p-4">Last Update</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
-                                            @foreach ($products as $product)
+                                            @foreach ($categories as $category)
                                                 <tr
                                                     class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
 
                                                     <th scope="row"
                                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                         <div class="flex items-center mr-3">
-                                                            <img src="{{ $product->image }}" alt=" {{ $product->name }}"
-                                                                class="w-auto h-8 mr-3">
-                                                            {{ $product->name }}
+                                                            {{ $category->name }}
                                                         </div>
                                                     </th>
-                                                    <td class="px-4 py-3">
-                                                        <span
-                                                            class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                                            {{ $product->category->name }}
-                                                        </span>
-                                                    </td>
+
                                                     <td
                                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                         <div class="flex items-center">
-                                                            <div
+                                                            {{-- <div
                                                                 class="inline-block w-4 h-4 mr-2 bg-green-500 rounded-full">
-                                                            </div>
-                                                            {{ $product->stock }}
+                                                            </div> --}}
+                                                            {{ $category->products->count() }}
                                                         </div>
                                                     </td>
-                                                    <td
-                                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        1.47</td>
-                                                    <td
-                                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        0.47</td>
-                                                    <td
-                                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <div class="flex items-center">
-                                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                                fill="currentColor" viewbox="0 0 20 20"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                            </svg>
-                                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                                fill="currentColor" viewbox="0 0 20 20"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                            </svg>
-                                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                                fill="currentColor" viewbox="0 0 20 20"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                            </svg>
-                                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                                fill="currentColor" viewbox="0 0 20 20"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                            </svg>
-                                                            <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
-                                                                fill="currentColor" viewbox="0 0 20 20"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                            </svg>
-                                                            <span
-                                                                class="ml-1 text-gray-500 dark:text-gray-400">5.0</span>
-                                                        </div>
-                                                    </td>
-                                                    <td
-                                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <div class="flex items-center">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                viewbox="0 0 24 24" fill="currentColor"
-                                                                class="w-5 h-5 mr-2 text-gray-400" aria-hidden="true">
-                                                                <path
-                                                                    d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
-                                                            </svg>
-                                                            1.6M
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-4 py-3">$3.2M</td>
+
                                                     <td
                                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                         <div class="flex items-center space-x-4">
-                                                            <a href="{{ route('product.edit', $product->id) }}"
+                                                            <a href="{{ route('category.edit', $category->id) }}"
                                                                 class="flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20"
@@ -187,7 +119,7 @@
                                                                 </svg>
                                                                 Edit
                                                             </a>
-                                                            <a href="{{ route('product.show', $product->id) }}"
+                                                            <a href="{{ route('category.show', $category->slug) }}"
                                                                 class="flex items-center px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     viewbox="0 0 24 24" fill="currentColor"
@@ -200,16 +132,15 @@
                                                             </a>
 
                                                             <form
-                                                                action="{{ route('product.destroy', $product->id) }} "
+                                                                action="{{ route('category.destroy', $category->id) }} "
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit"
                                                                     class="flex items-center px-3 py-2 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:text-white hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        class="h-4 w-4 mr-2 -ml-0.5"
-                                                                        viewbox="0 0 20 20" fill="currentColor"
-                                                                        aria-hidden="true">
+                                                                        class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20"
+                                                                        fill="currentColor" aria-hidden="true">
                                                                         <path fill-rule="evenodd"
                                                                             d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                                             clip-rule="evenodd" />
@@ -225,15 +156,12 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="p-4">{{ $products->links() }}</div>
+                                <div class="p-4">{{ $categories->links() }}</div>
 
                             </div>
                         </div>
                     </section>
                     <!-- End block -->
-
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
-
 
                 </div>
             </div>

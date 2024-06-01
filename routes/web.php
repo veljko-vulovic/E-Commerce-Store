@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -38,6 +39,9 @@ Route::prefix('dashboard')->group(function () {
     Route::patch('/product/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 
+
+    Route::resource('category', CategoryController::class);
+
     // Route::resource('product', ProductController::class);
 });
 Route::middleware('auth')->group(function () {
@@ -55,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/add/{product}', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/remove/{product}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+    Route::get('/category/{category:slug}', [CategoryController::class, 'show'])->name('category.show');
 });
 
 require __DIR__ . '/auth.php';

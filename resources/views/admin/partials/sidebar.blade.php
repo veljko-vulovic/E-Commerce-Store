@@ -5,7 +5,7 @@
             href="{{ route('dashboard') }}">Dashboard</a>
         <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="{{ route('product.index') }}">
             Products</a>
-        <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="#">
+        <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="{{ route('category.index') }}">
             Category</a>
         <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="#">
             Orders</a>

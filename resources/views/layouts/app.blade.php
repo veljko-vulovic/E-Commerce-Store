@@ -24,6 +24,8 @@
 <body class="font-sans antialiased dark:text-gray-200">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         @include('layouts.navigation')
+
+        <!-- Notifications -->
         @if (session()->has('error'))
             <x-notification :style="'danger'">
                 {{ session()->get('error') }}
@@ -32,6 +34,19 @@
             <x-notification>
                 {{ session()->get('success') }}
             </x-notification>
+        @endif
+
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <x-notification :style="'danger'">
+                            {{ $error }}
+                        </x-notification>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
 
