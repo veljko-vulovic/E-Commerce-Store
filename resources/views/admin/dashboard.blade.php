@@ -24,11 +24,11 @@
                         </div>
                     </div>
 
-                    <div class="flex">
+                    {{-- <div class="flex">
                         <div class="p-4 mx-auto mt-10">
-                            {{-- <img src="https://source.unsplash.com/random/1920x320" alt=""> --}}
+
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <div class="flex flex-col mt-10 text-white bg-[#24303f] rounded-md">
@@ -56,141 +56,38 @@
                             </div>
 
                         </div>
-                        <div class="grid grid-cols-6 px-2 py-3">
 
-                            <div class="p-4">
-                                <p class="text-center">1234</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Pera Peric</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Samsung Galaxy S10+</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">$999</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">25-May-2024</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Delivered</p>
-                            </div>
 
-                        </div>
-                        <div class="grid grid-cols-6 px-2 py-3">
+                        @foreach ($orders as $order)
+                            <div class="grid grid-cols-6 px-2 py-3">
 
-                            <div class="p-4">
-                                <p class="text-center">1234</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Pera Peric</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Samsung Galaxy S10+</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">$999</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">25-May-2024</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Delivered</p>
-                            </div>
+                                <div class="p-4">
+                                    <p class="text-center">{{ $order->id }}</p>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-center">{{ $order->user->name }}</p>
+                                </div>
+                                <div class="p-4">
+                                    <p class="flex flex-col text-center">
+                                        @foreach ($order->products() as $orderProduct)
+                                            <a href="{{ route('product.show', $orderProduct->id) }}"
+                                                class="text-sm hover:text-blue-500 hover:underline">{{ $orderProduct->name }}</a>
+                                        @endforeach
+                                    </p>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-center">{{ $order->total_amount }} RSD</p>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-center">{{ date_format($order->updated_at, 'd-M-Y') }}</p>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-center">{{ $order->status }}</p>
+                                </div>
 
-                        </div>
-                        <div class="grid grid-cols-6 px-2 py-3">
-
-                            <div class="p-4">
-                                <p class="text-center">1234</p>
                             </div>
-                            <div class="p-4">
-                                <p class="text-center">Pera Peric</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Samsung Galaxy S10+</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">$999</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">25-May-2024</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Delivered</p>
-                            </div>
-
-                        </div>
-                        <div class="grid grid-cols-6 px-2 py-3">
-
-                            <div class="p-4">
-                                <p class="text-center">1234</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Pera Peric</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Samsung Galaxy S10+</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">$999</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">25-May-2024</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Delivered</p>
-                            </div>
-
-                        </div>
-                        <div class="grid grid-cols-6 px-2 py-3">
-
-                            <div class="p-4">
-                                <p class="text-center">1234</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Pera Peric</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Samsung Galaxy S10+</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">$999</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">25-May-2024</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Delivered</p>
-                            </div>
-
-                        </div>
-                        <div class="grid grid-cols-6 px-2 py-3">
-
-                            <div class="p-4">
-                                <p class="text-center">1234</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Pera Peric</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Samsung Galaxy S10+</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">$999</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">25-May-2024</p>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-center">Delivered</p>
-                            </div>
-
-                        </div>
-
+                        @endforeach
                     </div>
-
                 </div>
             </div>
         </div>

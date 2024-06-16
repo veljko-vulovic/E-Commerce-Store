@@ -3,7 +3,6 @@
 namespace App\View\Components\Product;
 
 use App\Models\Product;
-use App\Models\Whishlist;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;

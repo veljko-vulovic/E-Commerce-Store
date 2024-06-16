@@ -41,9 +41,9 @@ class DatabaseSeeder extends Seeder
         ]);
         // User::factory(12)->create();
         Vendor::factory(10)->create();
-        Product::factory(50)->create();
-        Order::factory(10)->create();
-        Review::factory(10)->create();
+        // Product::factory(20)->create();
+        // Order::factory(10)->create();
+        // Review::factory(10)->create();
         Commission::factory(10)->create();
         Category::factory(10)->create();
 

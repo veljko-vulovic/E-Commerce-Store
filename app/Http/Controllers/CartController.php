@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCartRequest;
-use App\Http\Requests\UpdateCartRequest;
 use App\Models\Cart;
-use App\Models\Product;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CartItem;
+
 
 class CartController extends Controller
 {
@@ -17,79 +17,76 @@ class CartController extends Controller
      */
     public function index()
     {
-        $auth = Auth::user();
-        $user = User::find('1');
-        $cart = $user->cart()->with('product')->get();
-        // $cartItems = Auth::user();
-        $total = $user->cart->sum(function ($cart) {
-            return $cart->quantity * $cart->product->price;
-        });
+        $user = Auth::user();
+        // $cart = $user->cart()->first();
+        $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
-        return view('cart.index', [
-            'carts' => $cart,
-            'total' => $total,
 
-        ]);
+        if ($cart) {
+            $cartItems = $cart->items()->with('product')->get();
+            $total = $cartItems->sum('total_price');
+        } else {
+            $cartItems = collect();
+            $total = 0;
+        }
+
+        return view('cart.index', compact('cart', 'cartItems', 'total'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $productId)
+    public function store(Request $request, Product $product)
     {
-        $product = Product::findOrFail($productId);
+        $userId = Auth::id();
+        $cart = Cart::firstOrCreate(['user_id' => $userId]);
 
+        $cartItem = $cart->items()->where('product_id', $product->id)->first();
 
-
-        $cart = Cart::where('product_id', $product->id)->where('user_id', Auth::id())->first();
-        // $cartItem = Auth::user()->cart()->where('product_id', $product->id)->first();
-
-        if ($cart) {
-            $cart->increment('quantity', $request->input('quantity', 1));
+        if ($cartItem) {
+            if ($request->input('quantity', $cartItem->quantity) <= $product->stock) {
+                $cartItem->increment('quantity', $request->input('quantity', 1));
+                $cartItem->total_price = $product->price * $cartItem->quantity;
+                $cartItem->save();
+            } else {
+                return back()->with('error', 'Max quantity is ' . $product->stock);
+            }
         } else {
-            $cart = new Cart();
-            $cart->user_id = Auth::id();
-            $cart->product_id = $product->id;
-            $cart->quantity = $request->input('quantity', 1);
-        }
-        $cart->save();
+            if ($request->input('quantity', 1) <= $product->stock)
+                $cart->items()->create([
+                    'product_id' => $product->id,
+                    'quantity' => $request->input('quantity', 1),
+                    'total_price' => $product->price * $request->input('quantity', 1)
+                ]);
 
+            else
+                return back()->with('error', 'There is no stock left for this product');
+        }
 
         return back()->with('success', 'Product added to cart');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cart $cart)
+    public function update(Request $request, Product $product)
     {
-        if ($cart) {
-            $cart->quantity = $request->input('quantity', $cart->quantity);
-            $cart->save();
+        $userId = Auth::id();
+        $cart = Cart::firstOrCreate(['user_id' => $userId]);
+        $cartItem = $cart->items()->where('product_id', $product->id)->first();
+
+
+        if ($cartItem) {
+            if ($request->input('quantity', $cartItem->quantity) <= $product->stock) {
+                $cartItem->quantity = $request->input('quantity', $cartItem->quantity);
+                $cartItem->total_price = $product->price * $cartItem->quantity;
+                $cartItem->save();
+            } else {
+                return back()->with('error', 'Max quantity is ' . $product->stock);
+            }
+
+
             return back()->with('success', 'Cart updated');
         } else {
             return back()->with('error', 'Item not found in your cart');
@@ -102,7 +99,7 @@ class CartController extends Controller
     public function destroy($id)
     {
 
-        $cartItem = Cart::where('id', $id)->where('user_id', Auth::id())->first();
+        $cartItem = CartItem::where('id', $id)->first();
 
 
         if ($cartItem) {

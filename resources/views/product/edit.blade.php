@@ -55,12 +55,25 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="flex flex-col">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="product_image">Product Image</label>
+
+                                    @if ($product->image)
+                                        <img class="mb-5 h-80 w-80" src="{{ asset('storage/' . $product->image) }}"
+                                            alt="">
+                                    @endif
+
+                                    <input
+                                        class="block w-1/3 mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="product_image" name="image" type="file">
+
+
+                                </div>
+
                                 <div class="flex items-center">
                                     <label class="flex items-center cursor-pointer">
-                                        {{-- {{ $product->featured }} --}}
-                                        {{--
-                                        <input type="checkbox" name="featured" value="1"
-                                            {{ $product->featured ? 'checked' : '' }} class="sr-only peer"> --}}
 
                                         <input type="checkbox" id="featured" name="featured" value="1"
                                             {{ $product->featured ? 'checked' : '' }} class="sr-only peer">
@@ -94,8 +107,6 @@
                                 <div class="flex flex-col space-y-4">
                                     <div class="flex items-center space-x-4">
                                         <label class="inline-flex items-center cursor-pointer">
-                                            {{ $product->on_sale }}
-
                                             <input type="checkbox" name="on_sale" value="1"
                                                 {{ $product->on_sale ? 'checked' : '' }} class="sr-only peer">
 

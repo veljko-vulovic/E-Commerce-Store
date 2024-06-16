@@ -15,12 +15,13 @@
                 <div class="col-span-10 p-10 bg-gray-800 rounded-md">
 
                     <h3 class="text-3xl font-bold">
-                        Edit Product
+                        Create Product
                     </h3>
 
                     <section class="p-3 antialiased sm:p-5">
                         <div class="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
-                            <form class="space-y-4" method="POST" action="{{ route('product.store') }}">
+                            <form class="space-y-4" method="POST" action="{{ route('product.store') }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="flex space-x-3">
                                     <div class="flex flex-col items-start space-y-3">
@@ -40,6 +41,15 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="product_image">Product Image</label>
+                                    <input
+                                        class="block w-1/3 mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="product_image" name="image" type="file">
+
+
                                 </div>
                                 <div class="flex items-center">
                                     <label class="flex items-center cursor-pointer">
@@ -72,7 +82,6 @@
                                 <div class="flex flex-col space-y-4">
                                     <div class="flex items-center space-x-4">
                                         <label class="inline-flex items-center cursor-pointer">
-                                            {{-- <input type="checkbox" name="on_sale" value="true" class="sr-only peer"> --}}
                                             <input type="checkbox" name="on_sale" value="1" class="sr-only peer">
 
                                             <div
@@ -83,7 +92,6 @@
                                         </label>
 
                                         <div class="flex flex-col items-start space-y-3">
-                                            {{-- <label for="sale_percent">Sale Precent</label> --}}
                                             <input
                                                 class="px-3 py-2 text-white placeholder-gray-300 bg-gray-700 border border-gray-700 rounded-md"
                                                 type="number" name="sale_percent" id="sale_percent"
@@ -91,10 +99,7 @@
                                         </div>
 
                                     </div>
-
-
                                 </div>
-
 
                                 <div class="flex flex-col items-start space-y-3">
                                     <label for="stock">Stock</label>

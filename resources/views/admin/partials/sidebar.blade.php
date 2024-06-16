@@ -7,7 +7,7 @@
             Products</a>
         <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="{{ route('category.index') }}">
             Category</a>
-        <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="#">
+        <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="{{ route('order.index') }}">
             Orders</a>
         <a class="w-full px-4 py-3 text-xl font-bold text-center hover:bg-white/20" href="#">
             Reviews</a>

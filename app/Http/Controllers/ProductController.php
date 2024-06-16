@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use SebastianBergmann\CodeCoverage\Node\File;
 
 class ProductController extends Controller
 {
@@ -14,6 +16,7 @@ class ProductController extends Controller
     public function index()
     {
         $prodcuts = Product::with('category')->latest()->paginate(10);
+
         return view('product.index', [
             'products' => $prodcuts
         ]);
@@ -38,7 +41,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
+        // dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -52,9 +55,14 @@ class ProductController extends Controller
         ]);
 
 
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('product_images');
+            $validatedData['image'] = $path;
+        }
+
         $product = Product::create([
             'name' => $validatedData['name'],
-            'image' => 'https://source.unsplash.com/random/200x200?sig=' . rand(1, 100),
+            'image' => $validatedData['image'],
             'description' => $validatedData['description'],
             'price' => $validatedData['price'],
             'stock' => $validatedData['stock'],
@@ -114,7 +122,7 @@ class ProductController extends Controller
         ]);
 
         $product->name = $validatedData['name'];
-        $product->image = $request->file('image') ? $request->file('image')->store('images') : $product->image;
+        $product->image = $request->file('image') ? $request->file('image')->store('product_images') : $product->image;
         $product->category_id = $validatedData['category_id'];
         $product->description = $validatedData['description'];
         $product->price = $validatedData['price'];
@@ -134,7 +142,11 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product) {
+            if ($product->image && Storage::exists($product->image)) {
+                Storage::delete($product->image);
+            }
             $product->delete();
+
             return redirect()->route('product.index')->with('success', 'Product deleted successfully');
         } else {
             return redirect()->route('product.index')->with('error', 'Product not found');
