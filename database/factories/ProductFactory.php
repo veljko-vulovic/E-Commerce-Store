@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,8 +18,6 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $vendors = Vendor::all();
-
         return [
             'name' => fake()->words(3, true),
             'image' => fake()->imageUrl(640, 480),
@@ -27,9 +26,8 @@ class ProductFactory extends Factory
             'on_sale' => fake()->boolean,
             'featured' => fake()->boolean,
             'sale_percent' => fake()->numberBetween(0, 70),
-            'category_id' => fake()->randomElement([1, 2, 3, 4, 5]),
+            'category_id' => Category::factory()->create()->id,
             'stock' => fake()->numberBetween(0, 100),
-            // 'vendor_id' => fake()->randomElement($vendors)->id,
         ];
     }
 }

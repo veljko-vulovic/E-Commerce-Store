@@ -21,11 +21,7 @@ class CartFactory extends Factory
         return [
             'user_id' => function () {
                 return User::inRandomOrder()->first()->id;
-            },
-            'product_id' => function () {
-                return Product::inRandomOrder()->first()->id;
-            },
-            'quantity' => fake()->numberBetween(1, 5),
+            }
         ];
     }
 }

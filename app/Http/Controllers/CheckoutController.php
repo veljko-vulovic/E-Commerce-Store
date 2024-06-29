@@ -80,44 +80,44 @@ class CheckoutController extends Controller
         $sessionId = $request->get('session_id');
 
         $cartItems = session()->get('cartItems');
-        // try {
-        $session = \Stripe\Checkout\Session::retrieve($sessionId);
-        // if (!$session) {
-        //     throw new NotFoundHttpException();
-        // }
-        $customer = \Stripe\Customer::retrieve($session->customer);
-
-        $order = Order::where('stripe_id', $session->id)->where('status', 'pending')->first();
-
-        if (!$order) {
-            // throw new NotFoundHttpException();
-        }
-
-        // dd($cartItems);
-
-        if ($order && $order->status === 'pending') {
-            $order->status = 'confirmed';
-
-            foreach ($cartItems as $item) {
-                $product = Product::find($item->product)->first();
-                $product->stock -= $item->quantity;
-                $product->save();
+        try {
+            $session = \Stripe\Checkout\Session::retrieve($sessionId);
+            if (!$session) {
+                throw new NotFoundHttpException();
             }
-            $order->save();
-            $request->session()->forget('cartItems');
+            $customer = \Stripe\Customer::retrieve($session->customer);
 
+            $order = Order::where('stripe_id', $session->id)->where('status', 'pending')->first();
 
-            $cart = Cart::where('user_id', $order->user_id)->first();
-            if ($cart) {
-                $cart->delete();
+            if (!$order) {
+                throw new NotFoundHttpException();
             }
+
+            // dd($cartItems);
+
+            if ($order && $order->status === 'pending') {
+                $order->status = 'confirmed';
+
+                foreach ($cartItems as $item) {
+                    $product = Product::find($item->product)->first();
+                    $product->stock -= $item->quantity;
+                    $product->save();
+                }
+                $order->save();
+                $request->session()->forget('cartItems');
+
+
+                $cart = Cart::where('user_id', $order->user_id)->first();
+                if ($cart) {
+                    $cart->delete();
+                }
+            }
+
+
+            return view('checkout.success', compact('customer'));
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException();
         }
-
-
-        return view('checkout.success', compact('customer'));
-        // } catch (\Exception $e) {
-        //     throw new NotFoundHttpException();
-        // }
     }
 
     public function cancel()

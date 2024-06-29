@@ -59,7 +59,6 @@ Route::middleware('auth')->group(function () {
 
 
     // Payment
-    // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/cart/{cart}/checkout', [CheckoutController::class, 'checkout'])->name('checkout.process');
     Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');

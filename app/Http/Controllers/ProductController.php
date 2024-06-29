@@ -15,10 +15,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $prodcuts = Product::with('category')->latest()->paginate(10);
+        $product = Product::with('category')->latest()->paginate(10);
 
         return view('product.index', [
-            'products' => $prodcuts
+            'products' => $product
         ]);
     }
 
@@ -117,7 +117,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'featured' => 'nullable|boolean',
             'on_sale' => 'nullable|boolean',
-            'sale_percent' => 'nullable|numeric|min:0|max:100',
+            'sale_percent' => 'sometimes|numeric|min:0|max:100',
             'stock' => 'required|integer|min:0',
         ]);
 
@@ -128,7 +128,7 @@ class ProductController extends Controller
         $product->price = $validatedData['price'];
         $product->featured = $validatedData['featured'] ?? 0;
         $product->on_sale = $validatedData['on_sale'] ?? 0;
-        $product->sale_percent = $validatedData['sale_percent'];
+        $product->sale_percent = $validatedData['sale_percent'] ?? 0;
         $product->stock = $validatedData['stock'];
 
         $product->save();
